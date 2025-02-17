@@ -10,10 +10,7 @@ with open(file_path,"r") as obj:
         
         curr_line = [int(i) for i in curr_line]
 
-        o_operator = operator.gt if curr_line[0] > curr_line[1] else ''
-
-        if o_operator == '':        
-            o_operator = operator.lt if curr_line[0] < curr_line[1] else ''
+        o_operator = operator.gt if curr_line[0] > curr_line[1] else ( operator.lt if curr_line[0] < curr_line[1] else '' )
         
         if o_operator == '':
             continue
