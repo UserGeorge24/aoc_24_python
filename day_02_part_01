@@ -17,9 +17,7 @@ with open(file_path,"r") as obj:
         
         elements_of_apply = int()
         
-        for index,value in enumerate(curr_line):
-            if len(curr_line) - 1 == index: continue
-            
+        for index,value in enumerate(curr_line[:-1]):    
             if o_operator(value, curr_line[index + 1]) and operator.le(abs( value - curr_line[index + 1]), 3):
                 elements_of_apply += 1
             else:
