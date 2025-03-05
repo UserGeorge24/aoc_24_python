@@ -11,8 +11,10 @@ summa = 0
 for index, value in enumerate(file):
     
     if index == 0: continue
+# Find all occurences
     all_occ = re.finditer('A',value)
-    
+
+#  Loop on all find cases
     for match in all_occ:
         if match.start() == 0: continue
         try:
