@@ -1,22 +1,12 @@
-
 def make_pairs(updates): 
-    forward_pairs_temp = []
+    pairs_temp = []
     for index,update in enumerate(updates):
         try:    
-            for value in updates[index+1:len(updates)]:
-                forward_pairs_temp.append([int(update)])
-                forward_pairs_temp[len(forward_pairs_temp)-1].append(int(value))
+            for value in updates[index+1:]:
+                pairs_temp.append([update])
+                pairs_temp[len(pairs_temp)-1].append(value)
         except: continue        
-    return forward_pairs_temp
-
-def is_fit_to_rule(pairs):
-    global page_ordering_rules
-    for row in pairs:
-        try:
-            if page_ordering_rules.count(row) == 0:
-                return row
-        except: continue
-    return True
+    return pairs_temp
 
 file_path = "C:\\Users\\szita001\\Desktop\\advent\\2024_12_05.txt"
 file = [ line.strip() for line in open(file_path,'r').readlines() ]
@@ -24,13 +14,12 @@ summa = 0
 
 page_ordering_rules = []
 forward_pairs = []
-backward_pairs = []
 
 for index,value in enumerate(file):
     if value == '': break
     page_ordering_rules.append([int(value[0:2])])
     page_ordering_rules[index].append(int(value[3:5]))
-    
+
 for value in file[::-1]:
     if value == '': break
     
@@ -40,23 +29,26 @@ for value in file[::-1]:
     try_to_fix_flag = False
         
     while True:
-    
+
         forward_pairs  = make_pairs(updates)
-        backward_pairs = make_pairs(updates)
+       
+        intersect_values_of_forward = list(filter(lambda x: x in page_ordering_rules, forward_pairs))
         
-        result_forward  = is_fit_to_rule(forward_pairs)
-        result_backward = is_fit_to_rule(backward_pairs) 
-        
-        if result_forward == True and result_backward == True: 
+        if len(forward_pairs) == len(intersect_values_of_forward):
             if try_to_fix_flag == True:
-                summa += int(updates[int((len(updates)-1)/2)])
+               summa += int(updates[int((len(updates)-1)/2)])
             break
         else:
-            try_to_fix_flag = True
+            try_to_fix_flag = True 
             
-            index_of_first  = updates.index(result_forward[0])
-            index_of_second = updates.index(result_forward[1])
-            updates[index_of_first]  = result_forward[1]
-            updates[index_of_second] = result_forward[0]
-    
+            diff = list(filter(lambda x: x not in intersect_values_of_forward, forward_pairs))
+            
+            for i in diff:
+                to_be_replaced_01 = int(i[0])
+                to_be_replaced_02 = int(i[1])
+                index_of_first  = updates.index(to_be_replaced_01)
+                index_of_second = updates.index(to_be_replaced_02)
+                updates[index_of_first]  = to_be_replaced_02
+                updates[index_of_second] = to_be_replaced_01
+       
 print(summa)
