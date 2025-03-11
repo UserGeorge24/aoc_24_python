@@ -1,22 +1,12 @@
-
 def make_pairs(updates): 
-    forward_pairs_temp = []
+    pairs_temp = []       
     for index,update in enumerate(updates):
         try:    
-            for value in updates[index+1:len(updates)]:
-                forward_pairs_temp.append([int(update)])
-                forward_pairs_temp[len(forward_pairs_temp)-1].append(int(value))
+            for value in updates[index+1:]:
+                pairs_temp.append([update])
+                pairs_temp[len(pairs_temp)-1].append(value)
         except: continue        
-    return forward_pairs_temp
-
-def is_fit_to_rule(pairs):
-    global page_ordering_rules
-    for row in pairs:
-        try:
-            if page_ordering_rules.count(row) == 0:
-                return False
-        except: continue
-    return True
+    return pairs_temp
 
 file_path = "C:\\Users\\szita001\\Desktop\\advent\\2024_12_05.txt"
 file = [ line.strip() for line in open(file_path,'r').readlines() ]
@@ -24,24 +14,23 @@ summa = 0
 
 page_ordering_rules = []
 forward_pairs = []
-backward_pairs = []
 
 for index,value in enumerate(file):
     if value == '': break
     page_ordering_rules.append([int(value[0:2])])
     page_ordering_rules[index].append(int(value[3:5]))
-    
+
 for value in file[::-1]:
     if value == '': break
     
     updates = value.split(',')
+    updates = [int(i) for i in updates]
     
     forward_pairs  = make_pairs(updates)
-    updates.reverse()
-    backward_pairs = make_pairs(updates)
     
-    if is_fit_to_rule(forward_pairs) == True and is_fit_to_rule(forward_pairs) == True:
+    intersect_values_of_forward = list(filter(lambda x: x in page_ordering_rules, forward_pairs))
+    
+    if len(forward_pairs) == len(intersect_values_of_forward):
         summa += int(updates[int((len(updates)-1)/2)])
-    else: continue
-
+            
 print(summa)
