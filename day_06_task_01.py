@@ -41,7 +41,6 @@ class lcl_guard:
                 lcl_guard.guard_horizontal += index - 1
                 return
 
-        lcl_guard.sum_of_locations += index
         raise('EndOfStory')    
     
     @staticmethod
@@ -61,7 +60,6 @@ class lcl_guard:
                 lcl_guard.guard_horizontal -= index - 1
                 return
 
-        lcl_guard.sum_of_locations += index
         raise('EndOfStory')
     
     @staticmethod
@@ -80,7 +78,6 @@ class lcl_guard:
                 return
             else:
                 lcl_guard.down_mod_line(index)                
-        lcl_guard.sum_of_locations += index
         raise('EndOfStory')
     
     @staticmethod
@@ -101,8 +98,6 @@ class lcl_guard:
             if i[lcl_guard.guard_horizontal:lcl_guard.guard_horizontal+1] == '#': 
                 lcl_guard.guard_vertical   -= index
                 return
-            
-        lcl_guard.sum_of_locations += index
         raise('EndOfStory')
     
 start_time = time.time()
