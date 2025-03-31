@@ -1,9 +1,8 @@
 import math
-    
+
 def get_combinations(num):
     
     combinations = list()
-    
     to = 3**num if num != 1 else 2
     
     for i in range(0,to):
@@ -32,29 +31,30 @@ for row in file:
     splitted_row = row.split(':')
     elements = splitted_row[1].split(' ')
     elements.pop(0)
-    
+
     combinations = get_combinations(len(elements)-1)
     
     summa = int()
+    results = list()
+    comb_index = 0
+    
+    for index, value in enumerate(elements):
 
-    for i in combinations:
-        for index, value in enumerate(elements):    
-            
-            if index == 0:
-                summa = int(value)
+        if not results:
+            for i in range(0,len(combinations)):
+                results.append(int(elements[0]))
                 continue
-
-            if i[index-1] == '+':
-                summa += int(value)
-            elif i[index-1] == '*':
-                summa *= int(value)
-            elif i[index-1] == '&':
-                summa = int(str(summa) + value)
-                
-        if int(splitted_row[0]) == summa:
-            all_sum += summa
-            break
+        else:
+            for index, i in enumerate(combinations):
+                if i[comb_index] == '+':
+                    results[index] += int(value)
+                elif i[comb_index] == '*':
+                    results[index] *= int(value)
+                elif i[comb_index] == '&':
+                    results[index] = int(str(results[index]) + value)
+            comb_index += 1
+            
+    if int(splitted_row[0]) in results:
+        all_sum += int(splitted_row[0])
         
-        summa = 0
-
 print(all_sum)
